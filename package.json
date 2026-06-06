@@ -14,11 +14,13 @@
   "dependencies": {
     "@clerk/express": "^2.1.22",
     "axios": "^1.16.1",
+    "axios-retry": "^4.5.0",
     "cloudinary": "^2.10.0",
     "cors": "^2.8.6",
     "dns": "^0.2.2",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "https": "^1.0.0",
     "inngest": "^4.5.0",
     "mongoose": "^9.6.3"
   },
