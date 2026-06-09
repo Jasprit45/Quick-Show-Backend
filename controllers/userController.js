@@ -1,5 +1,6 @@
 import { clerkClient } from "@clerk/express";
 import Booking from "../models/Booking.js";
+import Movie from "../models/movie.js";
 
 
 //to get user bookings

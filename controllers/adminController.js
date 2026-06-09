@@ -20,7 +20,7 @@ export const getDashboradData = async (req, res) => {
 
         const totalUser = await User.countDocuments();
 
-        const dashboradData = {
+        const dashboardData = {
             totalBookings: bookings.length,
             totalRevenue: bookings.reduce((acc, booking) => acc + booking.amount, 0),
             activeShows,
@@ -29,7 +29,7 @@ export const getDashboradData = async (req, res) => {
 
         res.json({
             success: true,
-            dashboradData
+            dashboardData
         });
 
     } catch (error) {
@@ -44,7 +44,7 @@ export const getDashboradData = async (req, res) => {
 //to get all shows 
 export const getAllShows = async (req, res) => {
     try {
-        const shows = await (await Show.find({showDateTime: {$gte: new Date()}}).populate('movie')).sort({showDateTime: 1});
+        const shows = await (Show.find({showDateTime: {$gte: new Date()}}).populate('movie')).sort({showDateTime: 1});
 
         res.json({
             success: true,

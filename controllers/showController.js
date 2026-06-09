@@ -27,7 +27,8 @@ export const getNowPlayingMovies = async (req, res) => {
 
 export const addShow = async (req, res) => {
     try {
-        const {movieId, showInput, showPrice} = req.body;
+        const {movieId, showsInput, showPrice} = req.body;
+        // console.log( "Req payload Body :",req.body);
         let movie = await Movie.findById(movieId);
         // console.log(movie);
 
@@ -60,10 +61,10 @@ export const addShow = async (req, res) => {
 
             //add movie to db 
             movie = await Movie.create(movieDetails);
-        }
+        }      
 
             const showsToCreate = [];
-            showInput.forEach(show => {
+            showsInput.forEach(show => {
                 const showDate = show.date;
                 show.time.forEach((time)=> {
                     const dateTimeString = `${showDate}T${time}`;
@@ -130,7 +131,7 @@ export const getShow = async (req, res) => {
         const dateTime = {};
 
         shows.forEach((show) => {
-            const data = show.showDateTime.toISOString().split("T")[0];
+            const date = show.showDateTime.toISOString().split("T")[0];
             if(!dateTime[date]){
                 dateTime[date] = [];
             }
