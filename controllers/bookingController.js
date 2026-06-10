@@ -5,6 +5,7 @@ import https from 'https'
 import tmdbAxios from "../configs/axiosInstance.js"; 
 import Booking from "../models/Booking.js";
 import  stripe from 'stripe'
+import { inngest } from "../inngest/index.js";
 
 //check availability of selected seats for a movie
 const checkSeatAvailability = async (showId, selectedSeats) => {
@@ -84,6 +85,14 @@ export const createBooking = async (req, res) => {
 
         booking.paymentLink= session.url
         await booking.save();
+
+        //run inngest func to check payment status after 10 minutes
+        await inngest.send({
+            name: "app/checkpayment",
+            data: {
+                bookingId: booking._id.toString()
+            }
+        });
 
 
         res.json({
