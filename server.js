@@ -9,11 +9,15 @@ import showRouter from './Routes/showRoutes.js';
 import bookingRouter from './Routes/bookingRoutes.js';
 import adminRouter from './Routes/adminRoutes.js';
 import userRouter from './Routes/userRoutes.js';
+import { stripeWebhooks } from './controllers/stripeWebhooks.js';
 
 
 const app = express();
 const port = 3000;
 app.use(clerkMiddleware());
+
+//Stripe webhooks routes
+app.use('/api/stripe', express.raw({type: 'application/json'}), stripeWebhooks);
 
 
 //middlewares

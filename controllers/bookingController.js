@@ -4,6 +4,7 @@ import Show from "../models/shows.js";
 import https from 'https'
 import tmdbAxios from "../configs/axiosInstance.js"; 
 import Booking from "../models/Booking.js";
+import  stripe from 'stripe'
 
 //check availability of selected seats for a movie
 const checkSeatAvailability = async (showId, selectedSeats) => {
@@ -56,10 +57,38 @@ export const createBooking = async (req, res) => {
         await showData.save();
 
         //todo: stripe gateway initialize
+        const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
+
+        //creating line item to for stripe 
+        const line_items = [{
+            price_data: {
+                currency: 'aud',
+                product_data: {
+                    name: showData.movie.title
+                },
+                unit_amount: Math.floor(booking.amount) * 100
+            },
+            quantity: 1
+        }]
+
+        const session  =await stripeInstance.checkout.sessions.create({
+            success_url: `${origin}/loading/my-bookings`,
+            cancel_url: `${origin}/my-bookings`,
+            line_items: line_items,
+            mode: 'payment',
+            metadata: {
+                bookingId: booking._id.toString()
+            },
+            expires_at: Math.floor(Date.now() / 1000) + 30 * 60, //expires in 30min
+        })
+
+        booking.paymentLink= session.url
+        await booking.save();
+
 
         res.json({
             success:true,
-            message:"Booked Successfully"
+            url: session.url
         });
 
     } catch (error) {
