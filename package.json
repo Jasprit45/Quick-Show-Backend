@@ -23,6 +23,7 @@
     "https": "^1.0.0",
     "inngest": "^4.5.0",
     "mongoose": "^9.6.3",
+    "nodemailer": "^8.0.11",
     "stripe": "^22.2.0",
     "svix": "^1.95.2"
   },
