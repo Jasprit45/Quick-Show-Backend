@@ -11,10 +11,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-console.log(JSON.stringify(process.env.SMTP_USER));
-console.log(JSON.stringify(process.env.SMTP_PASS));
 await transporter.verify();
-console.log("SMTP verified");
+// console.log("SMTP verified");
 
 const sendEmail  = async ({to,subject,body}) => {
     const response = await transporter.sendMail({

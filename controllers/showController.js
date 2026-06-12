@@ -3,6 +3,7 @@ import Movie from "../models/movie.js";
 import Show from "../models/shows.js";
 import https from 'https'
 import tmdbAxios from "../configs/axiosInstance.js";  // ← use shared instance
+import { inngest } from "../inngest/index.js";
 
 export const getNowPlayingMovies = async (req, res) => {
   try {
@@ -79,6 +80,15 @@ export const addShow = async (req, res) => {
             if(showsToCreate.length > 0) {
                 await Show.insertMany(showsToCreate);
             }
+
+            //trigger inngest event
+
+            await inngest.send({
+                name: "app/show.added",
+                data: {
+                    movieTitle: movie.title
+                }
+            });
 
             res.json({success: true, message: 'Show Added Successfully.'});
         
